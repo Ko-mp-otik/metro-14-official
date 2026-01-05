@@ -1,3 +1,0 @@
-ent-BlackManMutantsdummy = Чёрный
-    .desc = ....
-    .suffix = Спонсор
