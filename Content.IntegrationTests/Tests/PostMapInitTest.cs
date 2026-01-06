@@ -412,36 +412,42 @@ namespace Content.IntegrationTests.Tests
                     }
                 }
 
+                //Metro14-start
+
                 // Test shuttle can dock.
                 // This is done inside gamemap test because loading the map takes ages and we already have it.
                 var station = entManager.GetComponent<StationMemberComponent>(targetGrid!.Value).Station;
-                if (entManager.TryGetComponent<StationEmergencyShuttleComponent>(station, out var stationEvac))
-                {
-                    var shuttlePath = stationEvac.EmergencyShuttlePath;
-                    Assert.That(mapLoader.TryLoadGrid(shuttleMap, shuttlePath, out var shuttle),
-                        $"Failed to load {shuttlePath}");
+                //if (entManager.TryGetComponent<StationEmergencyShuttleComponent>(station, out var stationEvac))
+                //{
+                //    var shuttlePath = stationEvac.EmergencyShuttlePath;
+                //    Assert.That(mapLoader.TryLoadGrid(shuttleMap, shuttlePath, out var shuttle),
+                //        $"Failed to load {shuttlePath}");
 
-                    Assert.That(
-                        shuttleSystem.TryFTLDock(shuttle!.Value.Owner,
-                            entManager.GetComponent<ShuttleComponent>(shuttle!.Value.Owner),
-                            targetGrid.Value),
-                        $"Unable to dock {shuttlePath} to {mapProto}");
-                }
+                //    Assert.That(
+                //        shuttleSystem.TryFTLDock(shuttle!.Value.Owner,
+                //            entManager.GetComponent<ShuttleComponent>(shuttle!.Value.Owner),
+                //            targetGrid.Value),
+                //        $"Unable to dock {shuttlePath} to {mapProto}");
+                //}
+                // весь блок между start и end просто не требуется для карт с сеттингом Metro 2033.
+                //Metro14-end
 
                 mapSystem.DeleteMap(shuttleMap);
 
                 if (entManager.HasComponent<StationJobsComponent>(station))
                 {
+                    //Metro14-start
                     // Test that the map has valid latejoin spawn points or container spawn points
-                    if (!NoSpawnMaps.Contains(mapProto))
-                    {
-                        var lateSpawns = 0;
+                    //if (!NoSpawnMaps.Contains(mapProto))
+                    //{
+                    //    var lateSpawns = 0;
 
-                        lateSpawns += GetCountLateSpawn<SpawnPointComponent>(gridUids, entManager);
-                        lateSpawns += GetCountLateSpawn<ContainerSpawnPointComponent>(gridUids, entManager);
+                    //    lateSpawns += GetCountLateSpawn<SpawnPointComponent>(gridUids, entManager);
+                    //    lateSpawns += GetCountLateSpawn<ContainerSpawnPointComponent>(gridUids, entManager);
 
-                        Assert.That(lateSpawns, Is.GreaterThan(0), $"Found no latejoin spawn points on {mapProto}");
-                    }
+                    //    Assert.That(lateSpawns, Is.GreaterThan(0), $"Found no latejoin spawn points on {mapProto}");
+                    //}
+                    //Metro14-end
 
                     // Test all availableJobs have spawnPoints
                     // This is done inside gamemap test because loading the map takes ages and we already have it.

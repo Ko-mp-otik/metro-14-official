@@ -12,7 +12,6 @@ Botany and Chemistry can often work together to produce better medicine (or recr
 </Box>
 
 <GuideReagentGroupEmbed Group="Botanical"/>
-<GuideReagentEmbed Reagent="UnstableMutagen"/>
 <GuideReagentEmbed Reagent="Cryoxadone"/>
 <GuideReagentEmbed Reagent="Dylovene"/>
 <GuideReagentEmbed Reagent="Phalanximine"/>
