@@ -65,6 +65,84 @@ public sealed class GrantSponsorCommand : LocalizedCommands
     }
 }
 
+[AdminCommand(AdminFlags.Admin)]
+public sealed class AddAllSponsorCommand : LocalizedCommands
+{
+    [Dependency] private readonly IPlayerLocator _playerLocator = default!;
+    [Dependency] private readonly IAdminManager _adminManager = default!;
+    [Dependency] private readonly IServerDbManager _dbManager = default!;
+    [Dependency] private readonly IPlayerManager _playerManager = default!;
+
+    public override string Command => "add_all_admin_flags";
+
+    public override async void Execute(IConsoleShell shell, string argStr, string[] args)
+    {
+        if (args.Length != 1)
+        {
+            shell.WriteError("Usage: grantsponsor <player>");
+            return;
+        }
+
+        var playerName = args[0];
+
+        var info = await _playerLocator.LookupIdByNameOrIdAsync(playerName);
+        if (info == null)
+        {
+            shell.WriteError($"Player {playerName} not found");
+            return;
+        }
+
+        // Проверяем, не является ли игрок уже админом  
+        var existingAdmin = await _dbManager.GetAdminDataForAsync(info.UserId);
+        if (existingAdmin != null)
+        {
+            shell.WriteError($"Player {playerName} is already an admin");
+            return;
+        }
+
+        var admin = new Admin
+        {
+            UserId = info.UserId,
+            Title = "Super Admin",
+            Deadminned = false,
+            Suspended = false
+        };
+
+        admin.Flags = new List<AdminFlag>();
+        foreach (AdminFlags flag in Enum.GetValues<AdminFlags>())
+        {
+            if (flag != AdminFlags.None)
+            {
+                admin.Flags.Add(new AdminFlag
+                {
+                    Flag = flag.ToString().ToUpper(), // ← Используйте этот метод  
+                    Negative = false
+                });
+            }
+        }
+
+        await _dbManager.AddAdminAsync(admin);
+
+        // Получаем сессию игрока для перезагрузки прав  
+        if (_playerManager.TryGetSessionById(info.UserId, out var playerSession))
+        {
+            _adminManager.ReloadAdmin(playerSession);
+        }
+    }
+
+    public override CompletionResult GetCompletion(IConsoleShell shell, string[] args)
+    {
+        return args.Length switch
+        {
+            1 => CompletionResult.FromHintOptions(
+                CompletionHelper.SessionNames(players: _playerManager),
+                "Player name or GUID"
+            ),
+            _ => CompletionResult.Empty
+        };
+    }
+}
+
 /// <summary>
 /// Класс-обработчик команды для добавления игрока в БД спонсоров.
 /// </summary>
