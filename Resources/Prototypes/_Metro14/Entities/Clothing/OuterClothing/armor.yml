@@ -1,0 +1,186 @@
+#Basic armor
+
+- type: entity
+  abstract: true
+  parent: [ClothingOuterBaseMedium, AllowSuitStorageClothing]
+  id: M14ClothingOuterArmorBase
+  components:
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.70
+        Slash: 0.70
+        Piercing: 0.70
+        Heat: 0.80
+  - type: ExplosionResistance
+    damageCoefficient: 0.90
+
+# Armor
+
+- type: entity
+  parent: ClothingOuterArmorBasic
+  id: M14ClothingOuterArmor
+  name: бронежилет
+  description: Обычный бронежилет, способный выдержать среднее количество урона каждого типа.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/bulletproof_vest2.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/bulletproof_vest2.rsi
+
+# Homemade Bulletproof
+- type: entity
+  parent: ClothingOuterArmorBasic
+  id: M14ClothingOuterArmorHomemadeBulletproof
+  name: самодельный пуленепробиваемый бронежилет
+  description: Бронежилет, созданный "на коленке". Довольно неудобный.
+  components:
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.6
+        Heat: 0.9
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/bulletproof_vest.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/bulletproof_vest.rsi
+
+# Bulletproof
+
+- type: entity
+  parent: ClothingOuterArmorBase
+  id: M14ClothingOuterArmorBulletproof
+  name: пуленепробиваемый бронежилет
+  description: Бронежилет, специально созданный для защиты от проникающих ран. Хорошо защищает от пуль, но при этом плохо защищает от остальных повреждений.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/bulletproof_vest3.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/bulletproof_vest3.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.4
+        Heat: 0.9
+  - type: ExplosionResistance
+    damageCoefficient: 0.80
+
+# Homemade Shockproof
+
+- type: entity
+  parent: ClothingOuterArmorBase
+  id: M14ClothingOuterArmorHomemadeShockproof
+  name: самодельный бронежилет от механических повреждений
+  description: Бронежилет, созданный "на коленке", который защищает от большинства механических повреждений, но при этом, плохо защищает от проникающих.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/shockproof_vest.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/shockproof_vest.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.8
+        Heat: 1.0
+        Caustic: 0.9
+  - type: ExplosionResistance
+    damageCoefficient: 0.9
+  - type: GroupExamine
+
+# Heavy
+
+- type: entity
+  parent: [ClothingOuterBaseLarge, AllowSuitStorageClothing]
+  id: M14ClothingOuterArmorHeavyRedLine
+  name: тяжёлый бронекостюм
+  description: Бронекостюм, специально созданный для защиты от многих видов повреждений. Из-за своих габаритов сильно замедляет движение.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/heavy_redline.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/heavy_redline.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.2
+        Piercing: 0.2
+        Heat: 0.5
+        Radiation: 0
+        Caustic: 0.75
+  - type: ExplosionResistance
+    damageCoefficient: 0.7
+  - type: ClothingSpeedModifier
+    walkModifier: 0.6
+    sprintModifier: 0.6
+  - type: GroupExamine
+  - type: ProtectedFromStepTriggers
+    slots: WITHOUT_POCKET
+
+- type: entity
+  parent: [ClothingOuterBaseLarge, AllowSuitStorageClothing]
+  id: M14ClothingOuterArmorHeavyHydra
+  name: бронекостюм Четвёртой Гидры
+  description: Бронекостюм для защиты от многих видов повреждений. Немного уступает тяжёлому бронекостюму по защите, но при этом меньше замедляет носителя.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/heavy_hydra.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/heavy_hydra.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.6
+        Radiation: 0
+        Caustic: 0.75
+  - type: ExplosionResistance
+    damageCoefficient: 0.7
+  - type: ClothingSpeedModifier
+    walkModifier: 0.8
+    sprintModifier: 0.8
+  - type: GroupExamine
+  - type: ProtectedFromStepTriggers
+    slots: WITHOUT_POCKET
+
+- type: entity
+  parent: M14ClothingOuterArmorHeavyHydra
+  id: M14ClothingOuterArmorHeavySparta
+  name: бронекостюм Спарты
+  description: Бронекостюм для защиты от многих видов повреждений. Немного уступает тяжёлому бронекостюму по защите, но при этом меньше замедляет носителя.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/heavy_sparta.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/heavy_sparta.rsi
+
+- type: entity
+  parent: M14ClothingOuterArmorHeavyHydra
+  id: M14ClothingOuterArmorHeavySpartaReconnaissance
+  name: разведовательный бронекостюм Спарты
+  description: Бронекостюм для защиты от многих видов повреждений. Немного уступает обычному бронекостюму Спарты, но при этом меньше замедляет носителя.
+  components:
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.4
+        Piercing: 0.4
+        Heat: 0.6
+        Radiation: 0
+        Caustic: 0.75
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: Sprite
+    sprite: _Metro14/Clothing/OuterClothing/Armor/sparta_reconnaissance.rsi
+  - type: Clothing
+    sprite: _Metro14/Clothing/OuterClothing/Armor/sparta_reconnaissance.rsi
