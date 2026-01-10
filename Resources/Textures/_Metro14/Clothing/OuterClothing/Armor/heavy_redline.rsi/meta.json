@@ -26,15 +26,15 @@
       "name": "KL-suit-icon"
     },
     {
-      "name": "KL-suit"
+      "name": "KL-suit",
       "directions": 4
     },
     {
-      "name": "KL-suit-inhand-left"
+      "name": "KL-suit-inhand-left",
       "directions": 4
     },
     {
-      "name": "KL-suit-inhand-right"
+      "name": "KL-suit-inhand-right",
       "directions": 4
     }
   ]
