@@ -8,8 +8,6 @@ namespace Content.Shared._Metro14.SpecialAbilities;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class SpecialAbilitiesComponent : Component
 {
-    #region Прототипы действий
-
     /// <summary>
     /// Прототип действия для усыпления сущностей в радиусе
     /// </summary>
@@ -34,9 +32,6 @@ public sealed partial class SpecialAbilitiesComponent : Component
     [DataField, AutoNetworkedField]
     public EntProtoId<InstantActionComponent> InvisibilityAction = "ActionSpecialInvisibility";
 
-    #endregion
-
-    #region Сущности действий
 
     /// <summary>
     /// Сущность действия сна, созданная из прототипа
@@ -62,9 +57,6 @@ public sealed partial class SpecialAbilitiesComponent : Component
     [DataField, AutoNetworkedField]
     public EntityUid? InvisibilityActionEntity;
 
-    #endregion
-
-    #region Параметры способности сна
 
     /// <summary>
     /// Радиус действия способности сна в тайлах
@@ -78,11 +70,8 @@ public sealed partial class SpecialAbilitiesComponent : Component
     /// Сущности будут спать указанное время
     /// </summary>
     [DataField]
-    public TimeSpan SleepDuration = TimeSpan.FromSeconds(30);
+    public TimeSpan SleepDuration = TimeSpan.FromSeconds(10);
 
-    #endregion
-
-    #region Параметры способности отбрасывания
 
     /// <summary>
     /// Радиус действия способности отбрасывания в тайлах
@@ -98,23 +87,18 @@ public sealed partial class SpecialAbilitiesComponent : Component
     [DataField]
     public float KnockbackForce = 20f;
 
-    #endregion
-
-    #region Параметры способности шейдера
 
     /// <summary>
     /// Радиус действия способности шейдера в тайлах
     /// Все игроки в этом радиусе увидят эффект галлюцинаций
     /// </summary>
     [DataField]
-    public float ShaderRadius = 20f;
+    public float ShaderRadius = 15f;
 
     /// <summary>
     /// Длительность эффекта шейдера
     /// Эффект галлюцинаций будет действовать указанное время
     /// </summary>
     [DataField]
-    public TimeSpan ShaderDuration = TimeSpan.FromSeconds(30);
-
-    #endregion
+    public TimeSpan ShaderDuration = TimeSpan.FromSeconds(10);
 }

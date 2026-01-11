@@ -136,7 +136,7 @@ public sealed class SpecialAbilitiesSystem : EntitySystem
 
         if (newState)
         {
-            _stealth.SetVisibility(uid, 0.1f, stealth);
+            _stealth.SetVisibility(uid, 0.001f, stealth);
             _stealth.SetEnabled(uid, true, stealth);
         }
         else

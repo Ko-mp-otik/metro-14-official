@@ -61,11 +61,11 @@
 - type: entity
   parent: BaseAction
   id: ActionSpecialSleep
-  name: Усыпить всех
-  description: Усыпляет всех существ в радиусе 5 тайлов на 30 секунд
+  name: Усыпить
+  description: Усыпляет всех существ в радиусе 5 тайлов на 10 секунд
   components:
   - type: Action
-    useDelay: 60 # Тест
+    useDelay: 30
     itemIconStyle: BigAction
     icon: _Metro14/Interface/Actions/SpecialAbilities/sleep.png
     checkCanInteract: false
@@ -76,11 +76,11 @@
 - type: entity
   parent: BaseAction
   id: ActionSpecialKnockback
-  name: Отбросить всех
-  description: Отбрасывает всех существ на 2 тайла и сбивает с ног
+  name: Отбросить
+  description: Отбрасывает существ в радиусе 5 тайлов и сбивает с ног
   components:
   - type: Action
-    useDelay: 45 # Тест
+    useDelay: 50
     itemIconStyle: BigAction
     icon: _Metro14/Interface/Actions/SpecialAbilities/push.png
     checkCanInteract: false
@@ -91,11 +91,11 @@
 - type: entity
   parent: BaseAction
   id: ActionSpecialShader
-  name: Эффект шейдера
-  description: Применяет визуальный эффект ко всем в радиусе 20 тайлов
+  name: Галлюцинации
+  description: Накладывает галлюцинации в радиусе 15 тайлов
   components:
   - type: Action
-    useDelay: 10  # Тест
+    useDelay: 25
     itemIconStyle: BigAction
     icon: _Metro14/Interface/Actions/SpecialAbilities/hallucinations.png
     checkCanInteract: false
@@ -110,7 +110,7 @@
   description: Делает вас невидимым для других
   components:
   - type: Action
-    useDelay: 5 # Тест
+    useDelay: 10
     itemIconStyle: BigAction
     icon: _Metro14/Interface/Actions/SpecialAbilities/invisibility.png
     checkCanInteract: false
