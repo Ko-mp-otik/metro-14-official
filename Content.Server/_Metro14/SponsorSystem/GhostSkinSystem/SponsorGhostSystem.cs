@@ -79,7 +79,7 @@ public sealed class SponsorGhostSystem : EntitySystem
 
         if (!isSponsor)
         {
-            TryRemoveAction(uid, component);
+            //TryRemoveAction(uid, component);
 
             SetGhostSprite(uid, component.DefaultState);
             return;
@@ -89,7 +89,7 @@ public sealed class SponsorGhostSystem : EntitySystem
 
         if (sponsorInfo == null || !sponsorInfo.IsActive)
         {
-            TryRemoveAction(uid, component);
+            //TryRemoveAction(uid, component);
 
             SetGhostSprite(uid, component.DefaultState);
             return;
@@ -133,7 +133,7 @@ public sealed class SponsorGhostSystem : EntitySystem
 
         if (!isSponsor)
         {
-            TryRemoveAction(uid, component);
+            //TryRemoveAction(uid, component);
 
             SetGhostSprite(uid, component.DefaultState);
             return;
@@ -143,7 +143,7 @@ public sealed class SponsorGhostSystem : EntitySystem
 
         if (sponsorInfo == null || !sponsorInfo.IsActive)
         {
-            TryRemoveAction(uid, component);
+            //TryRemoveAction(uid, component);
 
             SetGhostSprite(uid, component.DefaultState);
             return;
