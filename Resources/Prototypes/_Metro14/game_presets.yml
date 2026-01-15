@@ -5,3 +5,4 @@
   showInVote: true
   rules:
   - Metro14BasicRoundstartVariation
+  - RadioStationRule

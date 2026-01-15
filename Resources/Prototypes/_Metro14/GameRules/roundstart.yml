@@ -22,3 +22,11 @@
       orGroup: monospaceDecals
     - id: BasicDecalDirtMonospaceVariationPass # альтернативные грязные декали (50% вероятность)
       prob: 0.50
+
+- type: entity
+  parent: BaseGameRule
+  id: RadioStationRule
+  components:
+  - type: GameRule
+    minPlayers: 0
+  - type: RadioStationRule  # ваш компонент

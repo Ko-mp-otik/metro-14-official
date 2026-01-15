@@ -1,0 +1,128 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "https://github.com/Mojave-Sun/mojave-sun-13/blob/HEAD/mojave/icons/outcasts_storage_only/machines/radio.dmi",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "error"
+        },
+        {
+            "name": "mic"
+        },
+        {
+            "name": "micstand_empty",
+            "directions": 4
+        },
+        {
+            "name": "micstand",
+            "directions": 4
+        },
+        {
+            "name": "loudspeaker"
+        },
+        {
+            "name": "radio_mic1"
+        },
+        {
+            "name": "radio_mic2"
+        },
+        {
+            "name": "radio_mic3"
+        },
+        {
+            "name": "gannets_machine20"
+        },
+        {
+            "name": "gannets_machine21",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "gannets_machine30"
+        },
+        {
+            "name": "gannets_machine31",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "intercom-p"
+        },
+        {
+            "name": "intercom"
+        },
+        {
+            "name": "radio_off"
+        },
+        {
+            "name": "radio_on",
+            "delays": [
+                [
+                    4,
+                    1,
+                    4,
+                    1,
+                    4,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "radio_broken"
+        },
+        {
+            "name": "large_radio_off"
+        },
+        {
+            "name": "large_radio_turn_on",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    20
+                ]
+            ]
+        },
+        {
+            "name": "large_radio_on"
+        },
+        {
+            "name": "large_radio_turn_off",
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    20
+                ]
+            ]
+        },
+        {
+            "name": "celly"
+        },
+        {
+            "name": "walkietalkie"
+        },
+        {
+            "name": "walkietalkie_off"
+        }
+    ]
+}

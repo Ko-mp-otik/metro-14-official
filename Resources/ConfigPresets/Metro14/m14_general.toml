@@ -44,7 +44,7 @@ limit = 25.0
 max_updates = 300
 
 [whitelist]
-enabled = true
+enabled = false
 prototype_list = "basicWhitelist"
 
 [vote]

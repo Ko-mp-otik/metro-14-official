@@ -5,6 +5,7 @@
   name: Планшет
   description: Планшет с картой и записками.
   components:
+  - type: StationRecordKeyStorage
   - type: Appearance
   - type: InteractionOutline
   - type: Sprite
