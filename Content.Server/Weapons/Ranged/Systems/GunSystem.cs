@@ -168,16 +168,15 @@ public sealed partial class GunSystem : SharedGunSystem
                 var spreadEvent = new GunGetAmmoSpreadEvent(ammoSpreadComp.Spread);
                 RaiseLocalEvent(gun, ref spreadEvent);
 
-                var angles = LinearSpread(mapAngle - spreadEvent.Spread / 2,
-                    mapAngle + spreadEvent.Spread / 2, ammoSpreadComp.Count);
-
-                ShootOrThrow(ammoEnt, angles[0].ToVec(), gunVelocity, gun, user);
+                var spread = spreadEvent.Spread / 2;
+                var angles = LinearSpread(mapAngle - spread, mapAngle + spread, ammoSpreadComp.Count);
+                ShootOrThrow(ammoEnt, angles[0].ToVec() * mapDirection.Length(), gunVelocity, gun, user);
                 shotProjectiles.Add(ammoEnt);
 
                 for (var i = 1; i < ammoSpreadComp.Count; i++)
                 {
                     var newuid = Spawn(ammoSpreadComp.Proto, fromEnt);
-                    ShootOrThrow(newuid, angles[i].ToVec(), gunVelocity, gun, user);
+                    ShootOrThrow(newuid, angles[i].ToVec() * mapDirection.Length(), gunVelocity, gun, user);
                     shotProjectiles.Add(newuid);
                 }
             }
@@ -194,20 +193,20 @@ public sealed partial class GunSystem : SharedGunSystem
 
     private void ShootOrThrow(EntityUid uid, Vector2 mapDirection, Vector2 gunVelocity, Entity<GunComponent> gun, EntityUid? user)
     {
-        if (gun.Comp.Target is { } target && !TerminatingOrDeleted(target))
-        {
-            var targeted = EnsureComp<TargetedProjectileComponent>(uid);
-            targeted.Target = target;
-            Dirty(uid, targeted);
-        }
-
         // Do a throw
         if (!HasComp<ProjectileComponent>(uid))
         {
             RemoveShootable(uid);
             // TODO: Someone can probably yeet this a billion miles so need to pre-validate input somewhere up the call stack.
-            ThrowingSystem.TryThrow(uid, mapDirection, gun.Comp.ProjectileSpeedModified, user);
+            ThrowingSystem.TryThrow(uid, mapDirection, gun.Comp.ProjectileSpeedModified, user, compensateFriction: true, recoil: gun.Comp.CameraRecoilScalar > 0);
             return;
+        }
+
+        if (gun.Comp.Target is { } target && !TerminatingOrDeleted(target))
+        {
+            var targeted = EnsureComp<TargetedProjectileComponent>(uid);
+            targeted.Target = target;
+            Dirty(uid, targeted);
         }
 
         ShootProjectile(uid, mapDirection, gunVelocity, gun, user, gun.Comp.ProjectileSpeedModified);
@@ -219,14 +218,16 @@ public sealed partial class GunSystem : SharedGunSystem
     /// <param name="start">Start angle in degrees</param>
     /// <param name="end">End angle in degrees</param>
     /// <param name="intervals">How many shots there are</param>
-    private Angle[] LinearSpread(Angle start, Angle end, int intervals)
+    private static Angle[] LinearSpread(Angle start, Angle end, int intervals)
     {
         var angles = new Angle[intervals];
         DebugTools.Assert(intervals > 1);
 
+        var endToStart = end - start;
+        var interval0 = intervals - 1;
         for (var i = 0; i <= intervals - 1; i++)
         {
-            angles[i] = new Angle(start + (end - start) * i / (intervals - 1));
+            angles[i] = new Angle(start + endToStart * i / interval0);
         }
 
         return angles;

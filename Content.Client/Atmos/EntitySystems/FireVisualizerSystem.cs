@@ -83,6 +83,9 @@ public sealed class FireVisualizerSystem : VisualizerSystem<FireVisualsComponent
         else
             SpriteSystem.LayerSetRsiState((uid, sprite), index, component.NormalState);
 
+        if (MetaData(uid).EntityLifeStage < EntityLifeStage.Initialized)
+            return;
+
         component.LightEntity ??= Spawn(null, new EntityCoordinates(uid, default));
         var light = EnsureComp<PointLightComponent>(component.LightEntity.Value);
 

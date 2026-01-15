@@ -256,9 +256,7 @@ public abstract partial class SharedGunSystem : EntitySystem
             return false;
         }
 
-        var toCoordinates = gun.Comp.ShootCoordinates;
-
-        if (toCoordinates == null)
+        if (gun.Comp.ShootCoordinates == null) // One line Metro-14 changes
             return false;
 
         var curTime = Timing.CurTime;
@@ -379,7 +377,7 @@ public abstract partial class SharedGunSystem : EntitySystem
                 // Don't spam safety sounds at gun fire rate, play it at a reduced rate.
                 // May cause prediction issues? Needs more tweaking
                 gun.Comp.NextFire = TimeSpan.FromSeconds(Math.Max(lastFire.TotalSeconds + SafetyNextFire, gun.Comp.NextFire.TotalSeconds));
-                Audio.PlayPredicted(gun.Comp.SoundEmpty, gun, user);
+                Audio.PlayPredicted(ev.FailShotSound ?? gun.Comp.SoundEmpty, gun, user); // One line Metro-14 changes
                 return false;
             }
 
@@ -403,7 +401,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         }
 
         // Shoot confirmed - sounds also played here in case it's invalid (e.g. cartridge already spent).
-        Shoot(gun, ev.Ammo, fromCoordinates, toCoordinates.Value, out var userImpulse, user, throwItems: attemptEv.ThrowItems);
+        Shoot(gun, ev.Ammo, fromCoordinates, gun.Comp.ShootCoordinates.Value, out var userImpulse, user, throwItems: attemptEv.ThrowItems); // One line Metro-14 changes
         var shotEv = new GunShotEvent(user, ev.Ammo);
         RaiseLocalEvent(gun, ref shotEv);
 
@@ -414,7 +412,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         RaiseLocalEvent(user, ref shooterEv);
 
         if (shooterEv.Push)
-            CauseImpulse(fromCoordinates, toCoordinates.Value, (user, userPhysics));
+            CauseImpulse(fromCoordinates, gun.Comp.ShootCoordinates.Value, (user, userPhysics)); // One line Metro-14 changes
         return true;
     }
 
@@ -633,6 +631,52 @@ public abstract partial class SharedGunSystem : EntitySystem
             DirtyField(gun, nameof(GunComponent.ProjectileSpeedModified));
         }
     }
+
+    // Metro-14
+    /// <summary>
+    /// Метод изменяющий 1 поле в компоненте GunComponent
+    /// </summary>
+    /// <param name="gun">Компонент в котором мы меняем <see cref="GunComponent.ProjectileSpeedModified"/></param>
+    /// <param name="newSpeedModified">Новый параметр для поля <see cref="GunComponent.ProjectileSpeedModified"/></param>
+    public void SetProjectileSpeedModified(Entity<GunComponent?> gun, float newSpeedModified)
+    {
+        if (!Resolve(gun, ref gun.Comp))
+            return;
+
+        if (MathHelper.CloseTo(gun.Comp.ProjectileSpeedModified, newSpeedModified))
+            return;
+
+        gun.Comp.ProjectileSpeedModified = newSpeedModified;
+        DirtyField(gun, nameof(GunComponent.ProjectileSpeedModified));
+    }
+
+    /// <summary>
+    /// Метод изменяющий 1 поле в компоненте GunComponent
+    /// </summary>
+    /// <param name="gun">Компонент в котором мы меняем <see cref="GunComponent.ShootCoordinates"/></param>
+    /// <param name="newCoords">Новый параметр для поля <see cref="GunComponent.ShootCoordinates"/></param>
+    public void SetShootCoords(Entity<GunComponent?> gun, EntityCoordinates newCoords)
+    {
+        if (!Resolve(gun, ref gun.Comp))
+            return;
+
+        gun.Comp.ShootCoordinates = newCoords;
+    }
+
+    // ReSharper disable once ArrangeMethodOrOperatorBody
+    public void SetNextFire(Entity<GunComponent> gun, TimeSpan nextFire) => gun.Comp.NextFire = nextFire;
+    // ReSharper disable once ArrangeMethodOrOperatorBody
+    public void SetBurstShots(Entity<GunComponent> gun, int shots)
+    {
+        if (shots <= 0)
+        {
+            gun.Comp.BurstActivated = false;
+            gun.Comp.BurstShotsCount = shots;
+        }
+
+        gun.Comp.BurstShotsCount = shots;
+    }
+    // Metro-14
 
     protected abstract void CreateEffect(EntityUid gunUid, MuzzleFlashEvent message, EntityUid? user = null);
 
