@@ -1,6 +1,7 @@
 - type: department
-  id: Cargo
+  id: Cargo 
   name: department-Cargo
+  editorHidden: true #metro-changes
   description: department-Cargo-description
   color: "#A46106"
   roles:
@@ -11,6 +12,7 @@
 - type: department
   id: Civilian
   name: department-Civilian
+  editorHidden: true #metro-changes
   description: department-Civilian-description
   color: "#9FED58"
   weight: -10
@@ -52,6 +54,7 @@
 - type: department
   id: Command
   name: department-Command
+  editorHidden: true #metro-changes
   description: department-Command-description
   color: "#334E6D"
   roles:
@@ -77,6 +80,7 @@
 - type: department
   id: Engineering
   name: department-Engineering
+  editorHidden: true #metro-changes
   description: department-Engineering-description
   color: "#EFB341"
   roles:
@@ -88,6 +92,7 @@
 - type: department
   id: Medical
   name: department-Medical
+  editorHidden: true #metro-changes
   description: department-Medical-description
   color: "#52B4E9"
   roles:
@@ -100,6 +105,7 @@
 
 - type: department
   id: Security
+  editorHidden: true #metro-changes
   name: department-Security
   description: department-Security-description
   color: "#DE3A3A"
@@ -114,6 +120,7 @@
 - type: department
   id: Science
   name: department-Science
+  editorHidden: true #metro-changes
   description: department-Science-description
   color: "#D381C9"
   roles:
@@ -124,6 +131,7 @@
 - type: department
   id: Silicon
   name: department-Silicon
+  editorHidden: true #metro-changes
   description: department-Silicon-description
   color: "#D381C9"
   roles:
@@ -133,6 +141,7 @@
 - type: department
   id: Specific
   name: department-Specific
+  editorHidden: true #metro-changes
   description: department-Specific-description
   color: "#9FED58"
   weight: 10
