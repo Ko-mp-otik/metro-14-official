@@ -72,7 +72,7 @@
   components:
   - type: Sprite
     sprite: _Metro14/Structures/Railroad/railroad_metro.rsi
-    state: 
+    state: railroadStraightStation
     drawdepth: -3
 
 - type: entity
