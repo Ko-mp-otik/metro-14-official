@@ -34,9 +34,6 @@ public sealed class NightVisionDeviceSystem : EntitySystem
         SubscribeLocalEvent<NightVisionDeviceComponent, GetItemActionsEvent>(OnGetActions);
         SubscribeLocalEvent<NightVisionDeviceComponent, GotUnequippedEvent>(OnGotUnequipped);
         SubscribeLocalEvent<ToggleNightVisionDeviceActionEvent>(OnToggleNightVision);
-
-        //SubscribeLocalEvent<NightVisionDeviceUserComponent, MindRemovedMessage>(OnMindRemovedMessage);
-        //SubscribeLocalEvent<NightVisionDeviceUserComponent, MindUnvisitedMessage>(OnMindUnvisitedMessage);
     }
 
     /// <summary>
