@@ -1,8 +1,8 @@
 - type: reagent
   id: M_14voenstim
-  name: Кустарный военный стимулятор
+  name: reagent-name-voenstim
   group: Narcotics
-  desc: Боевой стимулятор
+  desc: reagent-desc-voenstim
   physicalDesc: reagent-physical-desc-translucent
   flavor: bitter
   color: "#FAFAFA"
@@ -17,7 +17,7 @@
             Burn: -5
             Brute: -5
             Toxin: -2
-            Airloss: -3 
+            Airloss: -3
     Narcotic:
       effects:
       - !type:MovementSpeedModifier
@@ -42,7 +42,7 @@
         effectProto: StatusEffectDrowsiness
         time: 90
         type: Remove
-      
+
 - type: entity
   name: военный стимулятор
   parent: ChemicalMedipen

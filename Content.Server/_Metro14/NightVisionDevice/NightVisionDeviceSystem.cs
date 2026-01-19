@@ -1,15 +1,18 @@
-using Robust.Shared.Audio;
-using Robust.Shared.Audio.Systems;
-using Robust.Shared.Containers;
-using Robust.Server.Player;
 using Content.Shared._Metro14.NightVisionDevice;
 using Content.Shared.Actions;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Mind.Components;
+using Content.Shared.Mobs.Components;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
+using Robust.Server.Player;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.Containers;
 
 namespace Content.Server._Metro14.NightVisionDevice;
 
@@ -22,6 +25,7 @@ public sealed class NightVisionDeviceSystem : EntitySystem
     [Dependency] private readonly InventorySystem _inventorySystem = default!;
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
 
     public override void Initialize()
     {
@@ -30,6 +34,9 @@ public sealed class NightVisionDeviceSystem : EntitySystem
         SubscribeLocalEvent<NightVisionDeviceComponent, GetItemActionsEvent>(OnGetActions);
         SubscribeLocalEvent<NightVisionDeviceComponent, GotUnequippedEvent>(OnGotUnequipped);
         SubscribeLocalEvent<ToggleNightVisionDeviceActionEvent>(OnToggleNightVision);
+
+        //SubscribeLocalEvent<NightVisionDeviceUserComponent, MindRemovedMessage>(OnMindRemovedMessage);
+        //SubscribeLocalEvent<NightVisionDeviceUserComponent, MindUnvisitedMessage>(OnMindUnvisitedMessage);
     }
 
     /// <summary>
@@ -121,6 +128,25 @@ public sealed class NightVisionDeviceSystem : EntitySystem
                     {
                         TryRiseEvent(uid, false, nightVisionDeviceComponent.SoundPathDisable);
                         nightVisionDeviceComponent.Enabled = false;
+                    }
+                }
+
+                if (_containerSystem.TryGetContainingContainer(uid, out var container))
+                {
+                    var wearer = container.Owner;
+                    if (TryComp<MobStateComponent>(wearer, out var mobState))
+                    {
+                        // Если носитель в крите или умер - снимаем очки  
+                        if (_mobState.IsCritical(wearer, mobState) || _mobState.IsDead(wearer, mobState))
+                        {
+                            // Снимаем очки из слота EYES  
+                            _inventorySystem.TryUnequip(wearer, "eyes", force: true);
+
+                            // Отправляем событие выключения  
+                            TryRiseEvent(uid, false, nightVisionDeviceComponent.SoundPathDisable);
+                            nightVisionDeviceComponent.Enabled = false;
+                            continue;
+                        }
                     }
                 }
             }
