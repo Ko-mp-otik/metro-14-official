@@ -97,6 +97,7 @@
   - type: Damageable
     damageContainer: Inorganic
     damageModifierSet: Wood
+  - type: Occluder
 
 - type: entity
   parent: M14DoorWood

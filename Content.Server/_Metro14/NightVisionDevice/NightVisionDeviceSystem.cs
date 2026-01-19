@@ -3,6 +3,8 @@ using Content.Shared.Actions;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Mind.Components;
+using Content.Shared.Mobs.Components;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.PowerCell;
@@ -23,6 +25,7 @@ public sealed class NightVisionDeviceSystem : EntitySystem
     [Dependency] private readonly InventorySystem _inventorySystem = default!;
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
 
     public override void Initialize()
     {
@@ -127,6 +130,25 @@ public sealed class NightVisionDeviceSystem : EntitySystem
                         nightVisionDeviceComponent.Enabled = false;
                     }
                 }
+
+                if (_containerSystem.TryGetContainingContainer(uid, out var container))
+                {
+                    var wearer = container.Owner;
+                    if (TryComp<MobStateComponent>(wearer, out var mobState))
+                    {
+                        // Если носитель в крите или умер - снимаем очки  
+                        if (_mobState.IsCritical(wearer, mobState) || _mobState.IsDead(wearer, mobState))
+                        {
+                            // Снимаем очки из слота EYES  
+                            _inventorySystem.TryUnequip(wearer, "eyes", force: true);
+
+                            // Отправляем событие выключения  
+                            TryRiseEvent(uid, false, nightVisionDeviceComponent.SoundPathDisable);
+                            nightVisionDeviceComponent.Enabled = false;
+                            continue;
+                        }
+                    }
+                }
             }
         }
     }
@@ -185,20 +207,4 @@ public sealed class NightVisionDeviceSystem : EntitySystem
         component.Enabled = false;
 
     }
-
-    //private void OnMindRemovedMessage(EntityUid uid, NightVisionDeviceUserComponent component, MindRemovedMessage args)
-    //{
-    //    if (_playerManager.TryGetSessionByEntity(uid, out var session) && component.Enabled)
-    //    {
-    //        RaiseNetworkEvent(new ToggleNightVisionDeviceEvent(false, GetNetEntity(uid), _audioSystem.ResolveSound(component.SoundPathDisable)), session);
-    //    }
-    //}
-
-    //private void OnMindUnvisitedMessage(EntityUid uid, NightVisionDeviceUserComponent component, MindUnvisitedMessage args)
-    //{
-    //    if (_playerManager.TryGetSessionByEntity(uid, out var session) && component.Enabled)
-    //    {
-    //        RaiseNetworkEvent(new ToggleNightVisionDeviceEvent(false, GetNetEntity(uid), _audioSystem.ResolveSound(component.SoundPathDisable)), session);
-    //    }
-    //}
 }
