@@ -1,8 +1,7 @@
 - type: job
   id: M14CivilianHansa
-  name: Гражданин ганзы
-  description: Следите за баром,проводите сталкеров,смотрите за грядками
-  playTimeTracker: M14CivilianHansa
+  name: job-name-civilian-hansa
+  description: job-description-civilian-hansa
   startingGear: M14CivilianHansaGear
   supervisors: job-supervisors-ganza
   icon: "JobIconHansa"
