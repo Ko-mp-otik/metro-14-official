@@ -1,4 +1,4 @@
-﻿name: Test Packaging
+name: Test Packaging
 
 on:
   push:
@@ -9,8 +9,6 @@ on:
       - '**.sln'
       - '**.git**'
       - '**.yml'
-      # no docs on which one of these is supposed to work, so
-      # why not just do both
       - 'RobustToolbox'
       - 'RobustToolbox/**'
   merge_group:
@@ -33,13 +31,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Клонируем основной репозиторий с токеном для приватных подмодулей
       - name: Checkout Master
         uses: actions/checkout@v4.2.2
-
-      - name: Setup Submodule
+        with:
+          token: ${{ secrets.PRIVATE_SUBMODULE_TOKEN || secrets.ORG_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          submodules: false
+          
+      # 2. Настраиваем доступ к приватным подмодулям Metro-Observers
+      - name: Setup private submodules
+        env:
+          PAT: ${{ secrets.PRIVATE_SUBMODULE_TOKEN || secrets.ORG_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
+          # Настраиваем Git для использования токена
+          git config --global url."https://x-access-token:$PAT@github.com".insteadOf "https://github.com"
+          
+          # Инициализируем подмодули
           git submodule update --init --recursive
-
+          
       - name: Pull engine updates
         uses: space-wizards/submodule-dependency@v0.1.5
 
