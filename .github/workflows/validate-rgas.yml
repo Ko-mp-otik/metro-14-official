@@ -5,34 +5,38 @@ on:
   merge_group:
   pull_request:
     types: [ opened, reopened, synchronize, ready_for_review ]
+  workflow_dispatch: 
 
 jobs:
   yaml-schema-validation:
     name: YAML RGA schema validator
     if: github.actor != 'IanComradeBot' && github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    
     steps:
-    - uses: actions/checkout@v4.2.2
-    - name: Setup Submodule
-      run: git submodule update --init
-    # Corvax-Secrets-Start
-    - name: Setup secrets
-      env:
-        SSH_KEY: ${{ secrets.SECRETS_PRIVATE_KEY }}
-      if: ${{ env.SSH_KEY != '' }}
-      run: |
-        mkdir ~/.ssh
-        echo "${{ secrets.SECRETS_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        echo "HOST *" > ~/.ssh/config
-        echo "StrictHostKeyChecking no" >> ~/.ssh/config
-        git -c submodule.Secrets.update=checkout submodule update --init
-    # Corvax-Secrets-End
-    - name: Pull engine updates
-      uses: space-wizards/submodule-dependency@v0.1.5
-    - uses: PaulRitter/yaml-schema-validator@v1
-      with:
-        schema: Schemas/rga.yml
-        path_pattern: .*attributions.ya?ml$
-        validators_path: Schemas/rga_validators.py
-        validators_requirements: Schemas/rga_requirements.txt
+      # 1. Клонируем основной репозиторий с токеном для приватных подмодулей
+      - uses: actions/checkout@v4.2.2
+        with:
+          token: ${{ secrets.PRIVATE_SUBMODULE_TOKEN || secrets.ORG_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          submodules: false
+          
+      # 2. Настраиваем доступ к приватным подмодулям Metro-Observers
+      - name: Setup private submodules
+        env:
+          PAT: ${{ secrets.PRIVATE_SUBMODULE_TOKEN || secrets.ORG_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          # Настраиваем Git для использования токена
+          git config --global url."https://x-access-token:$PAT@github.com".insteadOf "https://github.com"
+          
+          # Инициализируем подмодули
+          git submodule update --init --recursive
+      
+      - name: Pull engine updates
+        uses: space-wizards/submodule-dependency@v0.1.5
+        
+      - uses: PaulRitter/yaml-schema-validator@v1
+        with:
+          schema: Schemas/rga.yml
+          path_pattern: .*attributions.ya?ml$
+          validators_path: Schemas/rga_validators.py
+          validators_requirements: Schemas/rga_requirements.txt
